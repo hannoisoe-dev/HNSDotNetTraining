@@ -19,6 +19,8 @@ namespace HNSDotNetTraining.ConsoleApp
         }
 
         
+        public DbSet<BlogDataModel> Blogs { get; set; }
+
         // Spa Management System DbSets
         public DbSet<SpaServiceDataModel> SpaServices { get; set; }
         public DbSet<CustomerDataModel> Customers { get; set; }
