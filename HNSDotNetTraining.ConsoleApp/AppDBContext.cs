@@ -18,7 +18,6 @@ namespace HNSDotNetTraining.ConsoleApp
             }
         }
 
-        public DbSet<BlogDataModel> Blogs { get; set; }
 
 
     }
