@@ -3,4 +3,6 @@
     <File Path="README.md" />
   </Folder>
   <Project Path="HNSDotNetTraining.ConsoleApp/HNSDotNetTraining.ConsoleApp.csproj" />
+  <Project Path="HNSDotNetTraining.ConsoleApp2/HNSDotNetTraining.ConsoleApp2.csproj" Id="748c2ddf-bdb9-44f0-9e4a-c817e2d6466c" />
+  <Project Path="HNSDotNetTraining.Database/HNSDotNetTraining.Database.csproj" Id="f2e724c6-9815-4b8d-8da8-63d5c95a161b" />
 </Solution>
