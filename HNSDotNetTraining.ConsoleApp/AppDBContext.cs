@@ -1,4 +1,4 @@
-﻿using HNSDotNetTraining.ConsoleApp.Models;
+using HNSDotNetTraining.ConsoleApp.Models;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -18,7 +18,12 @@ namespace HNSDotNetTraining.ConsoleApp
             }
         }
 
-
-
+        
+        // Spa Management System DbSets
+        public DbSet<SpaServiceDataModel> SpaServices { get; set; }
+        public DbSet<CustomerDataModel> Customers { get; set; }
+        public DbSet<TherapistDataModel> Therapists { get; set; }
+        public DbSet<AppointmentDataModel> Appointments { get; set; }
+        public DbSet<PaymentDataModel> Payments { get; set; }
     }
 }
