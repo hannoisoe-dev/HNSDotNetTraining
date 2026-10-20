@@ -13,14 +13,14 @@ namespace HNSDotNetTraining.RESTApi.Controllers
         private readonly AppDbContext _db = new AppDbContext();
 
         [HttpGet]
-        public IActionResult GellBlogs()
+        public IActionResult GetBlogs()
         {
-            var lst = _db.TblBlogs.AsNoTracking().ToList();
+            var lst = _db.TblBlogs.AsNoTracking().Where(x=>x.DeleteFlag==false).ToList();
             return Ok(lst);
         }
 
         [HttpGet("{id}")]
-        public IActionResult GellBlog(int id)
+        public IActionResult GetBlog(int id)
         {
             var lst = _db.TblBlogs.AsNoTracking().Where(x => x.DeleteFlag == false).FirstOrDefault(x => x.BlogId == id);
 
