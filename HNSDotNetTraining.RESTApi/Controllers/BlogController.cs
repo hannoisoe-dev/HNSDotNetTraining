@@ -41,7 +41,7 @@ namespace HNSDotNetTraining.RESTApi.Controllers
             {
                 return BadRequest();
             }
-            return Ok();
+            return Ok("Created!");
         }
 
         [HttpPut("{id}")]
@@ -60,7 +60,7 @@ namespace HNSDotNetTraining.RESTApi.Controllers
 
             _db.Entry(lst).State = EntityState.Modified;
             _db.SaveChanges();
-            return Ok();
+            return Ok(lst);
         }
 
         [HttpPatch("{id}")]
@@ -86,6 +86,7 @@ namespace HNSDotNetTraining.RESTApi.Controllers
 
             _db.Entry(lst).State = EntityState.Modified;
             _db.SaveChanges();
+
             return Ok(lst);
         }
 
