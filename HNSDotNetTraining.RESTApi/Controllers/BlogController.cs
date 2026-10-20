@@ -10,21 +10,21 @@ namespace HNSDotNetTraining.RESTApi.Controllers
     [ApiController]
     public class BlogController : ControllerBase
     {
-       private readonly AppDbContext _db = new AppDbContext();
+        private readonly AppDbContext _db = new AppDbContext();
 
         [HttpGet]
         public IActionResult GellBlogs()
         {
-            var lst =_db.TblBlogs.AsNoTracking().ToList();
+            var lst = _db.TblBlogs.AsNoTracking().ToList();
             return Ok(lst);
         }
 
-        [HttpGet("id")]
+        [HttpGet("{id}")]
         public IActionResult GellBlog(int id)
         {
-            var lst =_db.TblBlogs.AsNoTracking().Where(x=> x.DeleteFlag == false).FirstOrDefault(x => x.BlogId == id);
+            var lst = _db.TblBlogs.AsNoTracking().Where(x => x.DeleteFlag == false).FirstOrDefault(x => x.BlogId == id);
 
-            if(lst is null)
+            if (lst is null)
             {
                 return NotFound();
             }
@@ -36,19 +36,19 @@ namespace HNSDotNetTraining.RESTApi.Controllers
         public IActionResult CreateBlog(TblBlog blog)
         {
             _db.TblBlogs.Add(blog);
-            int result=_db.SaveChanges();
-            if(result == 0)
+            int result = _db.SaveChanges();
+            if (result == 0)
             {
                 return BadRequest();
             }
             return Ok();
         }
 
-        [HttpPut("id")]
-        public IActionResult UpdateBlog(int id,TblBlog blog)
+        [HttpPut("{id}")]
+        public IActionResult UpdateBlog(int id, TblBlog blog)
         {
-            var lst =_db.TblBlogs.AsNoTracking().FirstOrDefault(x => x.BlogId == id);
-            if(lst is null)
+            var lst = _db.TblBlogs.AsNoTracking().FirstOrDefault(x => x.BlogId == id);
+            if (lst is null)
             {
                 return NotFound();
             }
@@ -63,25 +63,25 @@ namespace HNSDotNetTraining.RESTApi.Controllers
             return Ok();
         }
 
-        [HttpPatch("id")]
+        [HttpPatch("{id}")]
         public IActionResult PatchBlog(int id, TblBlog blog)
         {
-            var lst=_db.TblBlogs.AsNoTracking().Where(x => x.DeleteFlag == false).FirstOrDefault(x => x.BlogId == id);
-            if(lst is null)
+            var lst = _db.TblBlogs.AsNoTracking().Where(x => x.DeleteFlag == false).FirstOrDefault(x => x.BlogId == id);
+            if (lst is null)
             {
                 return NotFound();
             }
             if (!blog.BlogTitle.IsNullOrEmpty())
             {
-                lst.BlogTitle =blog.BlogTitle;
+                lst.BlogTitle = blog.BlogTitle;
             }
             if (!blog.BlogAuthor.IsNullOrEmpty())
             {
-                lst.BlogAuthor =blog.BlogAuthor;
+                lst.BlogAuthor = blog.BlogAuthor;
             }
             if (!blog.BlogContent.IsNullOrEmpty())
             {
-                lst.BlogContent =blog.BlogContent;
+                lst.BlogContent = blog.BlogContent;
             }
 
             _db.Entry(lst).State = EntityState.Modified;
@@ -89,7 +89,7 @@ namespace HNSDotNetTraining.RESTApi.Controllers
             return Ok(lst);
         }
 
-        [HttpDelete("id")]
+        [HttpDelete("{id}")]
         public IActionResult DeleteBlog(int id)
         {
            var lst= _db.TblBlogs.AsNoTracking().Where(x => x.DeleteFlag == false).FirstOrDefault(x => x.BlogId == id);
@@ -97,7 +97,8 @@ namespace HNSDotNetTraining.RESTApi.Controllers
             {
                 return NotFound();
             }
-            _db.TblBlogs.Remove(lst);
+            lst.DeleteFlag = true;
+            _db.Entry(lst).State = EntityState.Deleted;
             _db.SaveChanges();
             return Ok("Deleted!");
         }
