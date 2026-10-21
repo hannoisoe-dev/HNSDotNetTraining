@@ -9,6 +9,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\HNSDotNetTraining.Database\HNSDotNetTraining.Database.csproj" />
+    <ProjectReference Include="..\HNSDotNetTraining.Shared\HNSDotNetTraining.Shared.csproj" />
   </ItemGroup>
 
 </Project>
