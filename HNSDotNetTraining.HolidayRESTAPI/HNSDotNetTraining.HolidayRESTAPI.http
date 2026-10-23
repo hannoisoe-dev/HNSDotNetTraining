@@ -1,0 +1,6 @@
+@HNSDotNetTraining.HolidayRESTAPI_HostAddress = http://localhost:5144
+
+GET {{HNSDotNetTraining.HolidayRESTAPI_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
