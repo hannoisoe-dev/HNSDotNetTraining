@@ -10,7 +10,7 @@ namespace HNSDotNetTraining.RESTApi.Controllers
     [ApiController]
     public class BlogController : ControllerBase
     {
-        private readonly AppDbContext _db = new AppDbContext();
+        private readonly AppDbContext _db;
 
         [HttpGet]
         public IActionResult GetBlogs()

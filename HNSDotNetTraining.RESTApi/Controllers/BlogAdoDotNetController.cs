@@ -12,7 +12,12 @@ namespace HNSDotNetTraining.RESTApi.Controllers
     [ApiController]
     public class BlogAdoDotNetController : ControllerBase
     {
-        private readonly string connectionString = "Data Source=.;Initial Catalog=HNSDotNetTraining;User ID=sa;Password=sasa@123;TrustServerCertificate=True";
+        private readonly string connectionString;
+
+        public BlogAdoDotNetController(IConfiguration configuration)
+        {
+            connectionString = configuration.GetConnectionString("DbConnection")!;
+        }
 
         [HttpGet]
         public IActionResult GetBlogs()
@@ -94,7 +99,6 @@ namespace HNSDotNetTraining.RESTApi.Controllers
         [HttpPost]
         public IActionResult CrateBlog(BlogDataModel blog)
         {
-            
             SqlConnection connection = new SqlConnection(connectionString);
             connection.Open();
             string query = @"INSERT INTO [dbo].[Tbl_Blog]

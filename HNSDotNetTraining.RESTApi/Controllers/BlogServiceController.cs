@@ -11,9 +11,9 @@ namespace HNSDotNetTraining.RESTApi.Controllers
     {
         [HttpGet]
 
-        public IActionResult GetBlogs()
+        public IActionResult GetBlogs([FromServices] IBlogService service)
         {
-            BlogService service = new BlogService();
+            
             var lst = service.GetBlogs();
             if (lst is null)
             {
@@ -24,9 +24,8 @@ namespace HNSDotNetTraining.RESTApi.Controllers
 
         [HttpGet("{id}")]
 
-        public IActionResult GetBlogByid(int id)
+        public IActionResult GetBlogByid([FromServices] IBlogService service,int id)
         {
-            BlogService service = new BlogService();
             var lst = service.GetBlogById(id);
             if (lst is null)
             {
@@ -37,9 +36,9 @@ namespace HNSDotNetTraining.RESTApi.Controllers
 
         [HttpPost]
 
-        public IActionResult CreateBlog(TblBlog blog)
+        public IActionResult CreateBlog([FromServices] IBlogService service,TblBlog blog)
         {
-            BlogService service = new BlogService();
+            
             var lst = service.CreateBlog(blog);
             if (lst is false)
             {
@@ -50,9 +49,9 @@ namespace HNSDotNetTraining.RESTApi.Controllers
 
         [HttpPut("{id}")]
 
-        public IActionResult UpdateBlog(int id, TblBlog blog)
+        public IActionResult UpdateBlog([FromServices] IBlogService service,int id, TblBlog blog)
         {
-            BlogService service = new BlogService();
+            
             var lst = service.UpdateBlog(id, blog);
             if (lst is false)
             {
@@ -63,9 +62,9 @@ namespace HNSDotNetTraining.RESTApi.Controllers
 
         [HttpPatch("{id}")]
 
-        public IActionResult PatchBlog(int id, TblBlog blog)
+        public IActionResult PatchBlog([FromServices] IBlogService service,int id, TblBlog blog)
         {
-            BlogService service = new BlogService();
+            
             var lst = service.PatchBlog(id, blog);
             {
                 if (lst is false)
@@ -78,9 +77,9 @@ namespace HNSDotNetTraining.RESTApi.Controllers
 
         [HttpDelete]
 
-        public IActionResult DeleteBlog(int id)
+        public IActionResult DeleteBlog([FromServices] IBlogService service,int id)
         {
-            BlogService service = new BlogService();
+           
             var lst=service.DeleteBlog(id);
             if(lst is false)
             {
