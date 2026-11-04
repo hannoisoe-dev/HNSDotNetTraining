@@ -1,5 +1,7 @@
 ﻿// See https://aka.ms/new-console-template for more information
 using HNSDotNetTraining.DIExamples;
+using HNSDotNetTraining.DIExamples.Models;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using System.Data;
 using System.Net.Http.Headers;
@@ -96,8 +98,8 @@ var adoDotNet=services.GetRequiredService<AdoDotNet>();
 //    Console.WriteLine("Deleted!");
 //}
 
-var service=new ServiceCollection().AddSingleton<DapperService>().BuildServiceProvider();
-var dapperService=service.GetRequiredService<DapperService>();
+var service = new ServiceCollection().AddSingleton<DapperService>().BuildServiceProvider();
+var dapperService = service.GetRequiredService<DapperService>();
 //var result=dapperService.Query<BlogDataModel>("select * from Tbl_Blog");
 //foreach(var item in result)
 //{
@@ -149,17 +151,44 @@ var dapperService=service.GetRequiredService<DapperService>();
 //}
 
 
-int result=dapperService.Execute(@"UPDATE [dbo].[Tbl_Blog]
-   SET [DeleteFlag] = @DeleteFlag  WHERE BlogId=@BlogId",
-   new BlogDataModel
-   {
-       BlogId = 24,
-       DeleteFlag = true
-   }
-   );
+//int result=dapperService.Execute(@"UPDATE [dbo].[Tbl_Blog]
+//   SET [DeleteFlag] = @DeleteFlag  WHERE BlogId=@BlogId",
+//   new BlogDataModel
+//   {
+//       BlogId = 24,
+//       DeleteFlag = true
+//   }
+//   );
 
-string message = result > 0 ? "Deleted!" : "Delete Failed!";
-Console.WriteLine(message);
+//string message = result > 0 ? "Deleted!" : "Delete Failed!";
+//Console.WriteLine(message);
+
+var DbService=new ServiceCollection().AddDbContext<AppDbContext>(opt => opt.UseSqlServer(AppSetting.connectionString));
+
+var efService=DbService.AddScoped<EfCoreService>().BuildServiceProvider();
+var EfCoreService=efService.GetRequiredService<EfCoreService>();
+//var result = EfCoreService.Query();
+//foreach (var item in result)
+//{
+//    Console.WriteLine(item.BlogTitle);
+//}
+
+//var result=EfCoreService.QueryFirstOrDefault(21);
+//Console.WriteLine(result.BlogContent);
+
+//EfCoreService.Update(21, new TblBlog
+//{
+//    BlogTitle = "testing",
+//    BlogAuthor = "testing"
+//});
+
+//EfCoreService.Create(new TblBlog
+//{
+//    BlogTitle = "DI",
+//    BlogAuthor = "hns",
+//    BlogContent = "Dependency Injection",
+//    DeleteFlag = false
+//});
 
 
-
+EfCoreService.Delete(21);
