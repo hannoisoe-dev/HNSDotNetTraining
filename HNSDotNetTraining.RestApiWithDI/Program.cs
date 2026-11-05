@@ -20,6 +20,8 @@ builder.Services.AddScoped<IBlogService, BlogService>();
 
 builder.Services.AddScoped<IBlogDapper, BlogDapper>();
 
+builder.Services.AddScoped<IBlogAdoDotNet, BlogAdoDotNet>();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

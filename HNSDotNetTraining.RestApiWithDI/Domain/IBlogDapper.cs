@@ -1,4 +1,6 @@
-﻿namespace HNSDotNetTraining.RestApiWithDI.Domain
+﻿using HNSDotNetTraining.RestApiWithDI.Data;
+
+namespace HNSDotNetTraining.RestApiWithDI.Domain
 {
     public interface IBlogDapper
     {
