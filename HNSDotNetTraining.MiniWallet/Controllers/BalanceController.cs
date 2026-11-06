@@ -15,6 +15,7 @@ namespace HNSDotNetTraining.MiniWallet.Controllers
             BalanceService service=new BalanceService();
             string result=service.GetBalance(id, pin);
             return Ok(result);
+
         }
     }
 }

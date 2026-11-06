@@ -13,6 +13,11 @@ namespace HNSDotNetTraining.MiniWallet.Features
 
         public string Transfer(string FrmMobile,string ToMobile,decimal Amount,int Pin)
         {
+            if(FrmMobile == ToMobile)
+            {
+                return "Invalid Mobile Number!";
+            }
+
             var FrmMob=_db.TblAccounts.FirstOrDefault(x => x.MobileNo == FrmMobile);
             if(FrmMob is null)
             {
