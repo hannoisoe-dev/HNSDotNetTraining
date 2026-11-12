@@ -1,0 +1,678 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My To-Do List</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="sticky-footer-navbar.css" rel="stylesheet">
+
+    <style>
+        body {
+            background: #f5f7fb;
+            color: #212529;
+        }
+
+        .navbar {
+            background: #212529;
+        }
+
+        .main-container {
+            max-width: 950px;
+            margin: 0 auto;
+            padding-top: 85px;
+            padding-bottom: 40px;
+        }
+
+        .page-title {
+            font-weight: 700;
+        }
+
+        .task-card {
+            border: none;
+            border-radius: 12px;
+            box-shadow: 0 3px 15px rgba(0,0,0,0.05);
+        }
+
+        .stat-card {
+            border: none;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 3px 15px rgba(0,0,0,0.04);
+        }
+
+        .stat-number {
+            font-size: 28px;
+            font-weight: 700;
+        }
+
+        .task-item {
+            padding: 16px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .task-item:last-child {
+            border-bottom: none;
+        }
+
+        .task-completed .task-title {
+            text-decoration: line-through;
+            color: #999;
+        }
+
+        .task-title {
+            font-weight: 600;
+            word-break: break-word;
+        }
+
+        .task-description {
+            color: #777;
+            font-size: 14px;
+            margin-top: 5px;
+        }
+
+        .filter-btn.active {
+            background: #212529;
+            color: white;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 45px 15px;
+            color: #999;
+        }
+
+        .form-control {
+            padding: 11px;
+        }
+
+        .btn {
+            border-radius: 7px;
+        }
+
+        footer {
+            margin-top: auto;
+        }
+    </style>
+</head>
+
+<body class="d-flex flex-column min-vh-100">
+
+    <!-- Navbar -->
+    <header>
+        <nav class="navbar navbar-expand-md navbar-dark fixed-top">
+            <div class="container">
+                <a class="navbar-brand fw-bold" href="#">My To-Do List</a>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main-container container">
+
+        <!-- Heading -->
+        <div class="mb-4">
+            <h2 class="page-title">My Tasks</h2>
+            <p class="text-secondary">
+                Organize your day, one task at a time.
+            </p>
+        </div>
+
+        <!-- Dashboard Statistics -->
+        <div class="row g-3 mb-4">
+
+            <div class="col-md-4">
+                <div class="card stat-card">
+                    <div class="text-secondary">Total Tasks</div>
+                    <div class="stat-number" id="totalTasks">0</div>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="card stat-card">
+                    <div class="text-secondary">Pending Tasks</div>
+                    <div class="stat-number text-warning" id="pendingTasks">0</div>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="card stat-card">
+                    <div class="text-secondary">Completed Tasks</div>
+                    <div class="stat-number text-success" id="completedTasks">0</div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Add / Edit Task Form -->
+        <div class="card task-card mb-4">
+            <div class="card-body p-4">
+
+                <h5 class="fw-bold mb-3" id="formHeading">
+                    Add New Task
+                </h5>
+
+                <div class="mb-3">
+                    <label for="TaskTitle" class="form-label">
+                        Task Title
+                    </label>
+
+                    <input type="text"
+                           class="form-control"
+                           id="TaskTitle"
+                           placeholder="Enter task title">
+                </div>
+
+                <div class="mb-3">
+                    <label for="TaskDescription" class="form-label">
+                        Description
+                    </label>
+
+                    <textarea class="form-control"
+                              id="TaskDescription"
+                              rows="3"
+                              placeholder="Enter task description"></textarea>
+                </div>
+
+                <button type="button"
+                        class="btn btn-dark px-4"
+                        id="btnSave">
+                    Add Task
+                </button>
+
+                <button type="button"
+                        class="btn btn-secondary px-4 d-none"
+                        id="btnCancel">
+                    Cancel
+                </button>
+
+            </div>
+        </div>
+
+        <!-- Task List -->
+        <div class="card task-card">
+
+            <div class="card-body p-4">
+
+                <div class="d-flex justify-content-between
+                            align-items-center mb-3">
+
+                    <h5 class="fw-bold mb-0">Task List</h5>
+
+                    <span class="badge text-bg-dark" id="taskCount">
+                        0 Tasks
+                    </span>
+
+                </div>
+
+                <!-- Search -->
+                <div class="mb-3">
+                    <input type="text"
+                           class="form-control"
+                           id="searchTask"
+                           placeholder="Search tasks by title...">
+                </div>
+
+                <!-- Filters -->
+                <div class="d-flex gap-2 mb-3 flex-wrap">
+
+                    <button class="btn btn-outline-dark filter-btn active"
+                            data-filter="all">
+                        All
+                    </button>
+
+                    <button class="btn btn-outline-dark filter-btn"
+                            data-filter="pending">
+                        Pending
+                    </button>
+
+                    <button class="btn btn-outline-dark filter-btn"
+                            data-filter="completed">
+                        Completed
+                    </button>
+
+                </div>
+
+                <!-- Task Table -->
+                <div class="table-responsive">
+
+                    <table class="table align-middle">
+
+                        <thead class="table-light">
+                            <tr>
+                                <th>#</th>
+                                <th>Task</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+
+                        <tbody id="tblRows"></tbody>
+
+                    </table>
+
+                </div>
+
+                <div id="emptyMessage" class="empty-state d-none">
+                    <h5>No tasks found</h5>
+                    <p class="mb-0">
+                        Add a new task to get started.
+                    </p>
+                </div>
+
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="py-3 bg-dark text-white text-center mt-auto">
+        <div class="container">
+            <small>My To-Do List | Task Management System</small>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+
+        // Table Name
+        const TblName = "TodoList";
+
+        // Edit ID
+        let editId = null;
+
+        // Current Filter
+        let currentFilter = "all";
+
+        // Load Data
+        loadData();
+
+
+        // Save / Update Button
+        $("#btnSave").click(function () {
+
+            let title = $("#TaskTitle").val().trim();
+
+            if (title === "") {
+                alert("Please enter task title.");
+                $("#TaskTitle").focus();
+                return;
+            }
+
+            if (editId == null) {
+                SaveData();
+            } else {
+                updateData();
+            }
+
+        });
+
+
+        // Cancel Edit
+        $("#btnCancel").click(function () {
+            resetForm();
+        });
+
+
+        // Search Tasks
+        $("#searchTask").on("input", function () {
+            loadData();
+        });
+
+
+        // Filter Tasks
+        $(".filter-btn").click(function () {
+
+            $(".filter-btn").removeClass("active");
+
+            $(this).addClass("active");
+
+            currentFilter = $(this).data("filter");
+
+            loadData();
+
+        });
+
+
+        // Save New Task
+        function SaveData() {
+
+            let title = $("#TaskTitle").val().trim();
+
+            let description = $("#TaskDescription").val().trim();
+
+            let item = {
+                Id: crypto.randomUUID(),
+                title: title,
+                description: description,
+                isCompleted: false
+            };
+
+            let lst = getTasks();
+
+            lst.push(item);
+
+            localStorage.setItem(TblName, JSON.stringify(lst));
+
+            resetForm();
+
+            loadData();
+
+        }
+
+
+        // Get Existing Tasks
+        function getTasks() {
+
+            let existingData = localStorage.getItem(TblName);
+
+            if (existingData == null) {
+                return [];
+            }
+
+            return JSON.parse(existingData);
+
+        }
+
+
+        // Update Task
+        function updateData() {
+
+            let title = $("#TaskTitle").val().trim();
+
+            let description = $("#TaskDescription").val().trim();
+
+            let lst = getTasks();
+
+            let index = lst.findIndex(x => x.Id === editId);
+
+            if (index === -1) {
+                alert("Task not found.");
+                resetForm();
+                return;
+            }
+
+            lst[index].title = title;
+
+            lst[index].description = description;
+
+            localStorage.setItem(TblName, JSON.stringify(lst));
+
+            resetForm();
+
+            loadData();
+
+        }
+
+
+        // Edit Task
+        function editItem(Id) {
+
+            let lst = getTasks();
+
+            let item = lst.find(x => x.Id === Id);
+
+            if (!item) {
+                return;
+            }
+
+            editId = item.Id;
+
+            $("#TaskTitle").val(item.title);
+
+            $("#TaskDescription").val(item.description);
+
+            $("#formHeading").text("Edit Task");
+
+            $("#btnSave").text("Update Task");
+
+            $("#btnCancel").removeClass("d-none");
+
+            // Scroll to form
+            $("html, body").animate({
+                scrollTop: $(".task-card").first().offset().top - 80
+            }, 300);
+
+        }
+
+
+        // Delete Task
+        function deleteItem(Id) {
+
+            if (!confirm("Are you sure you want to delete this task?")) {
+                return;
+            }
+
+            let lst = getTasks();
+
+            let updatedList = lst.filter(x => x.Id !== Id);
+
+            localStorage.setItem(
+                TblName,
+                JSON.stringify(updatedList)
+            );
+
+            if (editId === Id) {
+                resetForm();
+            }
+
+            loadData();
+
+        }
+
+
+        // Complete / Undo Task
+        function toggleComplete(Id) {
+
+            let lst = getTasks();
+
+            let item = lst.find(x => x.Id === Id);
+
+            if (!item) {
+                return;
+            }
+
+            item.isCompleted = !item.isCompleted;
+
+            localStorage.setItem(TblName, JSON.stringify(lst));
+
+            loadData();
+
+        }
+
+
+        // Load All Tasks
+        function loadData() {
+
+            let lst = getTasks();
+
+            // Update Statistics
+            let total = lst.length;
+
+            let completed = lst.filter(
+                x => x.isCompleted
+            ).length;
+
+            let pending = total - completed;
+
+            $("#totalTasks").text(total);
+
+            $("#pendingTasks").text(pending);
+
+            $("#completedTasks").text(completed);
+
+
+            // Search
+            let searchText = $("#searchTask").val()
+                .trim()
+                .toLowerCase();
+
+            let filteredList = lst.filter(item => {
+
+                let matchesSearch = item.title
+                    .toLowerCase()
+                    .includes(searchText);
+
+                let matchesFilter = true;
+
+                if (currentFilter === "pending") {
+                    matchesFilter = !item.isCompleted;
+                }
+
+                if (currentFilter === "completed") {
+                    matchesFilter = item.isCompleted;
+                }
+
+                return matchesSearch && matchesFilter;
+
+            });
+
+            bindData(filteredList);
+
+        }
+
+
+        // HTML Escape
+        function escapeHTML(value) {
+
+            return String(value ?? "").replace(/[&<>"']/g, function (char) {
+
+                const entities = {
+                    "&": "&amp;",
+                    "<": "&lt;",
+                    ">": "&gt;",
+                    '"': "&quot;",
+                    "'": "&#39;"
+                };
+
+                return entities[char];
+
+            });
+
+        }
+
+
+        // Bind Tasks to Table
+        function bindData(lst) {
+
+            let rows = "";
+
+            $("#taskCount").text(lst.length + " Tasks");
+
+            if (lst.length === 0) {
+
+                $("#tblRows").html("");
+
+                $("#emptyMessage").removeClass("d-none");
+
+                return;
+
+            }
+
+            $("#emptyMessage").addClass("d-none");
+
+
+            for (let i = 0; i < lst.length; i++) {
+
+                let item = lst[i];
+
+                let status = item.isCompleted
+                    ? "Completed"
+                    : "Pending";
+
+                let badgeClass = item.isCompleted
+                    ? "text-bg-success"
+                    : "text-bg-warning";
+
+                let rowClass = item.isCompleted
+                    ? "task-completed"
+                    : "";
+
+                let actionText = item.isCompleted
+                    ? "Undo"
+                    : "Complete";
+
+                let safeId = escapeHTML(item.Id);
+
+                rows += `
+                    <tr class="${rowClass}">
+
+                        <td>${i + 1}</td>
+
+                        <td>
+                            <div class="task-title">
+                                ${escapeHTML(item.title)}
+                            </div>
+
+                            <div class="task-description">
+                                ${escapeHTML(item.description)}
+                            </div>
+                        </td>
+
+                        <td>
+                            <span class="badge ${badgeClass}">
+                                ${status}
+                            </span>
+                        </td>
+
+                        <td>
+                            <div class="d-flex gap-1 flex-wrap">
+
+                                <button type="button"
+                                    class="btn btn-sm btn-outline-success"
+                                    onclick="toggleComplete('${safeId}')">
+                                    ${actionText}
+                                </button>
+
+                                <button type="button"
+                                    class="btn btn-sm btn-outline-primary"
+                                    onclick="editItem('${safeId}')">
+                                    Edit
+                                </button>
+
+                                <button type="button"
+                                    class="btn btn-sm btn-outline-danger"
+                                    onclick="deleteItem('${safeId}')">
+                                    Delete
+                                </button>
+
+                            </div>
+                        </td>
+
+                    </tr>
+                `;
+
+            }
+
+            $("#tblRows").html(rows);
+
+        }
+
+
+        // Reset Form
+        function resetForm() {
+
+            editId = null;
+
+            $("#TaskTitle").val("");
+
+            $("#TaskDescription").val("");
+
+            $("#formHeading").text("Add New Task");
+
+            $("#btnSave").text("Add Task");
+
+            $("#btnCancel").addClass("d-none");
+
+        }
+
+    </script>
+
+</body>
+</html>
