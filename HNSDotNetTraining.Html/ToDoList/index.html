@@ -1,0 +1,354 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>TaskFlow - To Do List</title>
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="css/style.css">
+
+</head>
+
+<body class="min-h-screen flex flex-col bg-slate-50">
+
+    <!-- Navbar -->
+    <header class="bg-slate-900 text-white shadow-md">
+
+        <nav class="max-w-6xl mx-auto px-5 py-4 flex items-center justify-between">
+
+            <a href="#" class="flex items-center gap-2">
+                <span class="text-2xl">✓</span>
+                <span class="text-xl font-bold tracking-wide">TaskFlow</span>
+            </a>
+
+            <div class="flex items-center gap-5">
+                <a href="#" class="text-sm font-medium text-white">
+                    Dashboard
+                </a>
+
+                <div class="w-9 h-9 rounded-full bg-indigo-500
+                            flex items-center justify-center font-bold">
+                    U
+                </div>
+            </div>
+
+        </nav>
+
+    </header>
+
+
+    <!-- Main Content -->
+    <main class="flex-1 w-full max-w-6xl mx-auto px-5 py-8">
+
+        <!-- Page Heading -->
+        <div class="mb-8">
+
+            <h1 class="text-3xl font-bold text-slate-800">
+                My Tasks
+            </h1>
+
+            <p class="text-slate-500 mt-2">
+                Manage your tasks and stay productive.
+            </p>
+
+        </div>
+
+
+        <!-- Dashboard Statistics -->
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-5 mb-8">
+
+            <!-- Total Tasks -->
+            <div class="stat-card bg-white rounded-xl p-5 shadow-sm border border-slate-100">
+
+                <div class="flex items-center justify-between">
+
+                    <div>
+                        <p class="text-sm text-slate-500">
+                            Total Tasks
+                        </p>
+
+                        <h2 class="text-3xl font-bold text-slate-800 mt-2"
+                            id="totalTasks">
+                            0
+                        </h2>
+                    </div>
+
+                    <div class="icon-box bg-indigo-100 text-indigo-600">
+                        <span>▤</span>
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- Pending Tasks -->
+            <div class="stat-card bg-white rounded-xl p-5 shadow-sm border border-slate-100">
+
+                <div class="flex items-center justify-between">
+
+                    <div>
+                        <p class="text-sm text-slate-500">
+                            Pending Tasks
+                        </p>
+
+                        <h2 class="text-3xl font-bold text-amber-500 mt-2"
+                            id="pendingTasks">
+                            0
+                        </h2>
+                    </div>
+
+                    <div class="icon-box bg-amber-100 text-amber-600">
+                        <span>◷</span>
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- Completed Tasks -->
+            <div class="stat-card bg-white rounded-xl p-5 shadow-sm border border-slate-100">
+
+                <div class="flex items-center justify-between">
+
+                    <div>
+                        <p class="text-sm text-slate-500">
+                            Completed Tasks
+                        </p>
+
+                        <h2 class="text-3xl font-bold text-emerald-600 mt-2"
+                            id="completedTasks">
+                            0
+                        </h2>
+                    </div>
+
+                    <div class="icon-box bg-emerald-100 text-emerald-600">
+                        <span>✓</span>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- Add / Edit Task Form -->
+        <section class="bg-white rounded-xl shadow-sm border border-slate-100 p-6 mb-8">
+
+            <div class="flex items-center justify-between mb-5">
+
+                <div>
+                    <h2 class="text-xl font-bold text-slate-800"
+                        id="formHeading">
+                        Create a Task
+                    </h2>
+
+                    <p class="text-sm text-slate-500 mt-1">
+                        Add a new task to your list.
+                    </p>
+                </div>
+
+                <div class="text-2xl text-indigo-600">
+                    +
+                </div>
+
+            </div>
+
+
+            <form id="taskForm">
+
+                <!-- Task Title -->
+                <div class="mb-4">
+
+                    <label for="TaskTitle"
+                           class="block text-sm font-semibold text-slate-700 mb-2">
+                        Task Title
+                    </label>
+
+                    <input
+                        type="text"
+                        id="TaskTitle"
+                        name="TaskTitle"
+                        placeholder="What needs to be done?"
+                        maxlength="150"
+                        class="w-full border border-slate-300 rounded-lg px-4 py-3
+                               outline-none focus:ring-2 focus:ring-indigo-500
+                               focus:border-indigo-500 transition"
+                    >
+
+                </div>
+
+
+                <!-- Task Description -->
+                <div class="mb-5">
+
+                    <label for="TaskDescription"
+                           class="block text-sm font-semibold text-slate-700 mb-2">
+                        Description
+                    </label>
+
+                    <textarea
+                        id="TaskDescription"
+                        name="TaskDescription"
+                        rows="3"
+                        maxlength="1000"
+                        placeholder="Add some details about your task..."
+                        class="w-full border border-slate-300 rounded-lg px-4 py-3
+                               outline-none focus:ring-2 focus:ring-indigo-500
+                               focus:border-indigo-500 transition resize-none"
+                    ></textarea>
+
+                </div>
+
+
+                <!-- Buttons -->
+                <div class="flex flex-wrap gap-3">
+
+                    <button
+                        type="submit"
+                        id="btnSave"
+                        class="bg-indigo-600 hover:bg-indigo-700 text-white
+                               font-semibold px-6 py-3 rounded-lg transition">
+                        + Add Task
+                    </button>
+
+                    <button
+                        type="button"
+                        id="btnCancel"
+                        class="hidden bg-slate-200 hover:bg-slate-300
+                               text-slate-700 font-semibold px-6 py-3
+                               rounded-lg transition">
+                        Cancel
+                    </button>
+
+                </div>
+
+            </form>
+
+        </section>
+
+
+        <!-- Task List Section -->
+        <section class="bg-white rounded-xl shadow-sm border border-slate-100 p-6">
+
+            <!-- Task Heading -->
+            <div class="flex flex-wrap items-center justify-between gap-3 mb-5">
+
+                <div>
+                    <h2 class="text-xl font-bold text-slate-800">
+                        Your Tasks
+                    </h2>
+
+                    <p class="text-sm text-slate-500 mt-1">
+                        View and manage your tasks.
+                    </p>
+                </div>
+
+                <span id="taskCount"
+                      class="bg-indigo-100 text-indigo-700 text-sm
+                             font-semibold px-3 py-1 rounded-full">
+                    0 Tasks
+                </span>
+
+            </div>
+
+
+            <!-- Search -->
+            <div class="mb-5">
+
+                <input
+                    type="text"
+                    id="searchTask"
+                    placeholder="Search tasks by title..."
+                    class="w-full border border-slate-300 rounded-lg px-4 py-3
+                           outline-none focus:ring-2 focus:ring-indigo-500
+                           focus:border-indigo-500 transition"
+                >
+
+            </div>
+
+
+            <!-- Filters -->
+            <div class="flex flex-wrap gap-2 mb-6">
+
+                <button
+                    type="button"
+                    class="filter-btn active"
+                    data-filter="all">
+                    All
+                </button>
+
+                <button
+                    type="button"
+                    class="filter-btn"
+                    data-filter="pending">
+                    Pending
+                </button>
+
+                <button
+                    type="button"
+                    class="filter-btn"
+                    data-filter="completed">
+                    Completed
+                </button>
+
+            </div>
+
+
+            <!-- Task Cards -->
+            <div id="taskList" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+
+            </div>
+
+
+            <!-- Empty State -->
+            <div id="emptyMessage" class="hidden text-center py-12">
+
+                <div class="text-5xl mb-4">📝</div>
+
+                <h3 class="text-lg font-semibold text-slate-700">
+                    No tasks found
+                </h3>
+
+                <p class="text-sm text-slate-400 mt-2">
+                    Add a new task or try another filter.
+                </p>
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+    <!-- Footer -->
+    <footer class="bg-slate-900 text-white py-5 mt-8">
+
+        <div class="max-w-6xl mx-auto px-5 text-center">
+
+            <p class="text-sm text-slate-400">
+                © 2026 TaskFlow. All rights reserved.
+            </p>
+
+        </div>
+
+    </footer>
+
+
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+
+    <!-- Custom JavaScript -->
+    <script src="js/script.js"></script>
+
+</body>
+</html>
