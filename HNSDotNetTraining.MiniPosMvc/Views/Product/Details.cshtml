@@ -1,0 +1,37 @@
+@model TblProduct
+
+@{
+    ViewData["Title"] = "Product Details";
+    int count =0;
+}
+
+<h2>Product Details</h2>
+<hr />
+
+<div class="card col-md-6">
+    <div class="card-body">
+        <dl class="row mb-0">
+            <!-- <dt class="col-sm-4">Product ID</dt> -->
+            @* <dd class="col-sm-4">@(count++)</dd> *@
+            <dd class="col-sm-4">No</dd>
+            <dd class="col-sm-8">@(++count)</dd>
+
+            <dt class="col-sm-4">Product Code</dt>
+            <dd class="col-sm-8">@Model.ProductCode</dd>
+
+            <dt class="col-sm-4">Product Name</dt>
+            <dd class="col-sm-8">@Model.ProductName</dd>
+
+            <dt class="col-sm-4">Price</dt>
+            <dd class="col-sm-8">@Model.Price.ToString("N0")</dd>
+
+            <dt class="col-sm-4">Quantity</dt>
+            <dd class="col-sm-8">@Model.Quantity</dd>
+        </dl>
+    </div>
+    <div class="card-footer">
+        <a asp-action="Edit" asp-route-id="@Model.ProductId" class="btn btn-warning">Edit</a>
+        <a asp-action="Index" class="btn btn-secondary">Back to List</a>
+    </div>
+</div>
+
