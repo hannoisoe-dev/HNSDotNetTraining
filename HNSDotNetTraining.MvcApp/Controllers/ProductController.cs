@@ -38,7 +38,11 @@ namespace HNSDotNetTraining.MvcApp.Controllers
             return View("ProductUpdate");
         }
 
-
+        [ActionName("Delete")]
+        public async Task<IActionResult> ProductDelete()
+        {
+            return View("ProductDelete");
+        }
 
 
         
@@ -67,6 +71,20 @@ namespace HNSDotNetTraining.MvcApp.Controllers
             return Json(new
             {
                 IsSuccess = result,
+                message = message
+            });
+        }
+
+
+        [HttpDelete]
+        [ActionName("Delete")]
+        public async Task<IActionResult> productDelete(int id)
+        {
+          var result= await  _productService.DeleteProduct(id);
+            string message = result ? "Deleted" : "Delete Fail";
+            return Json(new
+            {
+                isSuccess = result,
                 message = message
             });
         }
@@ -132,6 +150,17 @@ namespace HNSDotNetTraining.MvcApp.Controllers
             return result > 0;
         }
 
+        
+        public async Task<bool> DeleteProduct(int id)
+        {
+            using IDbConnection db = new SqlConnection(_connectionString);
+            string query = "delete from Tbl_Product where ProductId=@ProductId";
+           var result= await db.ExecuteAsync(query, new
+            {
+                ProductId = id
+            });
+            return result > 0;
+        }
        
     }
     public interface IProductService
@@ -141,6 +170,8 @@ namespace HNSDotNetTraining.MvcApp.Controllers
         Task<bool> CreateProduct(ProductRequestModel requestModel);
 
         Task<bool> UpdateProduct(int id, ProductRequestModel requestModel);
+
+        Task<bool> DeleteProduct(int id);
     }
 
 
