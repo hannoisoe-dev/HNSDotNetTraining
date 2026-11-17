@@ -1,0 +1,85 @@
+﻿
+@{
+    ViewData["Title"] = "Create Product";
+}
+
+<h2>Create Product</h2>
+<hr />
+
+<div class="mb-3">
+    <label for="ProductName" class="form-label mb-2">
+        Product Name
+    </label>
+    <input type="text"
+           class="form-control"
+           id="ProductName"
+           placeholder="Enter product name">
+</div>
+
+<div class="mb-3">
+    <label for="Price" class="form-label mb-2">
+        Price
+    </label>
+    <input type="number"
+           class="form-control"
+           id="Price"
+           placeholder="Enter price">
+</div>
+
+<div class="mb-3">
+    <label for="Quantity" class="form-label mb-2">
+        Quantity
+    </label>
+    <input type="number"
+           class="form-control"
+           id="Quantity"
+           placeholder="Enter quantity">
+</div>
+
+<button type="button" class="btn btn-success" id="btnSave">
+    Save
+</button>
+
+<a href="/Product/Index" class="btn btn-secondary">
+    Back
+</a>
+
+@section scripts {
+    <script>
+        $('#btnSave').click(function () {
+
+            let name = $('#ProductName').val();
+            let price = $('#Price').val();
+            let quantity = $('#Quantity').val();
+
+            let reqModel = {
+                name: name,
+                price: price,
+                quantity: quantity
+            };
+
+            $.ajax({
+                url: '/Product/Save',
+                method: 'POST',
+                data: reqModel,
+
+                success: function (response) {
+
+                    if (response.isSuccess) {
+                        alert(response.message);
+                        window.location.href = '/Product/Index';
+                    }
+                    else {
+                        alert(response.message);
+                    }
+                },
+
+                error: function (xhr) {
+                    alert('Error creating product.');
+                    console.log(xhr.responseText);
+                }
+            });
+
+        });
+    </script>
+}
